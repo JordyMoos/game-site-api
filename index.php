@@ -128,7 +128,8 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/item-by-slug/') === 0) {
     }
 
     $ic = $ics[$slug];
-    $itemCount = min(100, itemCount($slug));
+    $total = itemCount($slug);
+    $itemCount = min(100, $total);
 
     $items = array_map(function ($id) use ($images) {
         return [
@@ -139,7 +140,14 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/item-by-slug/') === 0) {
         ];
     }, range(1, $itemCount));
 
-    echo json_encode($items);
+    echo json_encode([
+        'pagination' => [
+            'total' => $total,
+            'page' => 1,
+            'per_page' => 100,
+        ],
+        'items' => $items,
+    ]);
     exit();
 }
 

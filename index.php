@@ -122,7 +122,9 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/item-collection/') === 0) {
 }
 
 if (strpos($_SERVER['REQUEST_URI'], '/api/item-by-slug/') === 0) {
-    $slug = substr($_SERVER['REQUEST_URI'], strlen('/api/item-by-slug/'));
+    $path = explode('/', $_SERVER['REQUEST_URI']);
+    $slug = $path[3];
+    $page = (int) ($path[4] ?: 1);
     if ( ! isset($ics[$slug])) {
         fail();
     }
@@ -131,9 +133,9 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/item-by-slug/') === 0) {
     $total = itemCount($slug);
     $itemCount = min(100, $total);
 
-    $items = array_map(function ($id) use ($images) {
+    $items = array_map(function ($id) use ($page, $images) {
         return [
-          'title' => substr(md5($id), 0, rand(8, 20)),
+          'title' => substr(md5($id . 'p' . $page), 0, rand(8, 20)),
           'image' => $images[0],
           'since' => '1 year',
           'url' => 'https://www.google.com',
@@ -143,7 +145,7 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/item-by-slug/') === 0) {
     echo json_encode([
         'pagination' => [
             'total' => $total,
-            'page' => 1,
+            'page' => $page,
             'per_page' => 100,
         ],
         'items' => $items,

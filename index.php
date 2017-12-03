@@ -135,10 +135,10 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/item-by-slug/') === 0) {
 
     $items = array_map(function ($id) use ($page, $images) {
         return [
-          'title' => substr(md5($id . 'p' . $page), 0, rand(8, 20)),
+          'title' => substr(md5($id . 'p' . $page), 0, rand(5, 12)) . ' ' . ($id + (($page-1) * 100)),
           'image' => $images[0],
           'since' => '1 year',
-          'url' => 'https://www.google.com',
+          'url' => 'https://www.linuxmint.com',
         ];
     }, range(1, $itemCount));
 

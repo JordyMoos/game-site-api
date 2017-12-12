@@ -2,10 +2,10 @@
 
 Clone this
 ```
-git clone git@github.com:JordyMoos/gameemperor-api.git
+git clone https://github.com/JordyMoos/game-site-api.git
 ```
 ```
-cd gameemperor-api
+cd game-site-api
 ```
 
 Run the local server
